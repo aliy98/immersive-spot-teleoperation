@@ -85,24 +85,3 @@ sudo systemctl start mosqitto
 ```
 ./mediamtx
 ```
-
-### System Hypothesis and Future Work
-For future work, we aim to address the limitations of the current system and enhance its functionality. Planned improvements include:
-
-- **Semi-Autonomous Control Logic:** Incorporate advanced algorithms to enable semi-autonomous navigation and task execution, reducing the cognitive load on the operator.
-
-- **Enhanced Perception Capabilities:** Integrate additional sensors such as LIDAR or thermal cameras to improve environmental awareness and support complex tasks in challenging scenarios.
-
-- **Real-Time Feedback Optimization:** Optimize latency in image and control data transmission to enhance real-time responsiveness, particularly in low-bandwidth network conditions.
-
-- **Robust Communication Framework:** Implement fail-safe mechanisms and adaptive communication protocols to maintain system reliability in varying network conditions.
-
-- **User-Centered Design Improvements:** Conduct user evaluations to refine the system interface, improving usability and immersion in teleoperation tasks.
-
-- **Augmented Reality Integration:** Explore the use of augmented reality (AR) overlays on the HMD to provide contextual information such as obstacle warnings, path planning, or task-specific guidance.
-
-- **Expanding Robot Compatibility:** Extend the system to support other robot platforms, making it a versatile solution for diverse robotic teleoperation applications.
-
-By addressing these objectives, we aim to make the teleoperation system more efficient, reliable, and user-friendly, enabling a broader range of applications in fields such as search and rescue, inspection, and industrial automation.
-
-
