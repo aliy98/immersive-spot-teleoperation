@@ -1,3 +1,10 @@
+"""GStreamer probe that logs FPS, latency, bitrate, jitter and drops.
+
+Attaches an appsink/pad probe to the receiver pipeline, maps each buffer,
+and appends a row to ``metrics_data.csv``. Used to characterise the RTSP
+link during the user-study trials; not required for teleoperation.
+"""
+
 import sys
 import os
 sys.path.append('C:/gstreamer-python/lib/site-packages')

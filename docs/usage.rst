@@ -1,0 +1,77 @@
+Usage
+=====
+
+Bring the three nodes up in this order: cloud, robot, operator.
+
+1. Cloud
+--------
+
+.. code-block:: bash
+
+   sudo systemctl start mosquitto
+   ./mediamtx
+
+Confirm Mosquitto is listening on 1883 and MediaMTX on 8554.
+
+2. Robot (Jetson)
+-----------------
+
+.. code-block:: bash
+
+   python spot_client.py <cloud-server-public-ip> ZED
+
+The second argument selects the image source. ``ZED`` uses the stereo
+camera via ``ZEDInterface``. ``SPOT`` uses the Boston Dynamics image
+client instead.
+
+The process starts:
+
+* an MQTT subscriber on ``oculus/inputs``;
+* the LQR + locomotion control loop;
+* the GStreamer publisher to
+  ``rtsp://<cloud-server-public-ip>:8554/spot-stream``.
+
+Stand clear of the robot. The interface takes the lease, clears e-stop,
+and powers on the motors in ``SpotInterface._start``.
+
+3. Operator (Windows)
+---------------------
+
+Start the renderer, then the MQTT bridge:
+
+.. code-block:: bat
+
+   "ZED Stereo Passthrough.exe" <cloud-server-public-ip> ZED
+   python scripts\oculus_client.py <cloud-server-public-ip>
+
+``oculus_client.py`` reads six little-endian floats from
+``\\.\pipe\MyPipe`` every 50 ms and publishes them as JSON.
+
+Operator mapping
+----------------
+
+================== =================================================
+Input              Effect
+================== =================================================
+HMD pitch/yaw      LQR torso orientation (roll unused)
+Right thumbstick   Heading-frame :math:`v^X`, :math:`v^Y`
+Left thumbstick    Heading-frame :math:`\omega^Z`
+================== =================================================
+
+Safety
+------
+
+* Velocity commands expire after 0.6 s if the control thread stops.
+* Pitch and yaw are saturated at ±0.5 rad.
+* If the Jetson loses Internet (probe to ``8.8.8.8:53``), it restarts
+  the ``simcom_wwan@wwan0`` service and holds commands until the link
+  returns.
+* Keep a hardware e-stop in the loop for any outdoor trial.
+
+Metrics scripts
+---------------
+
+``scripts/record_metrics.py``, ``plot_metrics.py``, and
+``stats_metrics.py`` log and analyse the objective measures used in the
+user study (completion time, features found per minute). They are not
+required to teleoperate the robot.

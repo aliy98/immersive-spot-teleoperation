@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index &mdash; Immersive Spot Teleoperation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            immersive-spot-teleoperation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#problem">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-immersive-control">Why immersive control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-a-cloud-4g-architecture">Why a cloud + 4G architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#repository-layout">Repository layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">System architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#robot-client">Robot client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#cloud-server">Cloud server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#oculus-client">Oculus client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="control.html">High-level controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="control.html#torso-orientation-task-2-dof">Torso-orientation task (2 DoF)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="control.html#lqr">LQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html#saturation">Saturation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#locomotion-task-3-dof">Locomotion task (3 DoF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#parallel-execution">Parallel execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Real-time streaming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#element-key">Element key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#transmitter-jetson">Transmitter (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#receiver-windows">Receiver (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#why-this-stack">Why this stack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#operator-pc-windows-64-bit">Operator PC (Windows 64-bit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#jetson-nano-ubuntu-18-04">Jetson Nano (Ubuntu 18.04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#cloud-vm">Cloud VM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#building-this-documentation">Building this documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#cloud">1. Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#robot-jetson">2. Robot (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-windows">3. Operator (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-mapping">Operator mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#safety">Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#metrics-scripts">Metrics scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#message-and-command-layouts">Message and command layouts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_client.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#SpotClient"><code class="docutils literal notranslate"><span class="pre">SpotClient</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_zed"><code class="docutils literal notranslate"><span class="pre">stream_loop_zed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_spot"><code class="docutils literal notranslate"><span class="pre">stream_loop_spot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_controller.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_controller.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_controller.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_interface.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_interface.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_zed.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/zed_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_zed.html#ZEDInterface"><code class="docutils literal notranslate"><span class="pre">ZEDInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_oculus.html"><code class="docutils literal notranslate"><span class="pre">scripts/oculus_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_oculus.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_metrics.html">Evaluation scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-record-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/record_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-plot-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/plot_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-stats-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/stats_metrics.py</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_cpp.html">C++ operator client</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#include-shader-hpp-src-shader-cpp"><code class="docutils literal notranslate"><span class="pre">include/Shader.hpp</span></code> / <code class="docutils literal notranslate"><span class="pre">src/Shader.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#src-main-cpp"><code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#cmake-target">CMake target</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="citing.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">immersive-spot-teleoperation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_cpp.html#_CPPv418__capture_runner__R10ThreadDataN2cv12VideoCaptureE">__capture_runner__ (C++ function)</a>
+</li>
+      <li><a href="api_spot_interface.html#SpotInterface._orientation_cmd_helper">_orientation_cmd_helper() (SpotInterface method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_interface.html#SpotInterface._start">_start() (SpotInterface method)</a>
+</li>
+      <li><a href="api_spot_interface.html#SpotInterface._toggle_estop">_toggle_estop() (SpotInterface method)</a>
+</li>
+      <li><a href="api_spot_interface.html#SpotInterface._velocity_cmd_helper">_velocity_cmd_helper() (SpotInterface method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_cpp.html#_CPPv419BindCVMat2GLTextureRN2cv3MatER6GLuint">BindCVMat2GLTexture (C++ function)</a>
+</li>
+      <li>
+    built-in function
+
+      <ul>
+        <li><a href="api_metrics.html#calculate_stats">calculate_stats()</a>
+</li>
+        <li><a href="api_oculus.html#main">main()</a>, <a href="api_spot_client.html#main">[1]</a>
+</li>
+        <li><a href="api_metrics.html#read_metrics_from_csv">read_metrics_from_csv()</a>
+</li>
+        <li><a href="api_spot_client.html#stream_loop_spot">stream_loop_spot()</a>
+</li>
+        <li><a href="api_spot_client.html#stream_loop_zed">stream_loop_zed()</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_metrics.html#MetricsRecorder.calculate_jitter">calculate_jitter() (MetricsRecorder method)</a>
+</li>
+      <li><a href="api_metrics.html#MetricsRecorder.calculate_latency">calculate_latency() (MetricsRecorder method)</a>
+</li>
+      <li>
+    calculate_stats()
+
+      <ul>
+        <li><a href="api_metrics.html#calculate_stats">built-in function</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_client.html#SpotClient.control_loop">control_loop() (SpotClient method)</a>
+</li>
+      <li><a href="api_spot_controller.html#Controller">Controller (built-in class)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_client.html#SpotClient.flag_connected">flag_connected (SpotClient attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_interface.html#SpotInterface.get_image">get_image() (SpotInterface method)</a>
+
+      <ul>
+        <li><a href="api_zed.html#ZEDInterface.get_image">(ZEDInterface method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_controller.html#Controller.get_setpoints">get_setpoints() (Controller method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_controller.html#INPUT_TRESHOLD">INPUT_TRESHOLD (built-in variable)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_client.html#SpotClient.inputs">inputs (SpotClient attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    main()
+
+      <ul>
+        <li><a href="api_oculus.html#main">built-in function</a>, <a href="api_spot_client.html#main">[1]</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_interface.html#MAX_PITCH">MAX_PITCH (built-in variable)</a>
+</li>
+      <li><a href="api_spot_interface.html#MAX_YAW">MAX_YAW (built-in variable)</a>
+</li>
+      <li><a href="api_metrics.html#MetricsRecorder">MetricsRecorder (built-in class)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_oculus.html#OculusClient">OculusClient (built-in class)</a>
+</li>
+      <li><a href="api_oculus.html#OculusClient.on_connect">on_connect() (OculusClient method)</a>
+
+      <ul>
+        <li><a href="api_spot_client.html#SpotClient.on_connect">(SpotClient method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_metrics.html#MetricsRecorder.on_frame">on_frame() (MetricsRecorder method)</a>
+</li>
+      <li><a href="api_spot_client.html#SpotClient.on_message">on_message() (SpotClient method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_oculus.html#port">port (built-in variable)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_cpp.html#_CPPv415quaternionToRPY16ovrTrackingState">quaternionToRPY (C++ function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    read_metrics_from_csv()
+
+      <ul>
+        <li><a href="api_metrics.html#read_metrics_from_csv">built-in function</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_client.html#SpotClient.reconnect">reconnect() (SpotClient method)</a>
+</li>
+      <li><a href="api_cpp.html#_CPPv43RPY">RPY (C++ struct)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_interface.html#SpotInterface.set_controls">set_controls() (SpotInterface method)</a>
+</li>
+      <li><a href="api_spot_controller.html#Controller.setpoints">setpoints (Controller attribute)</a>
+</li>
+      <li><a href="api_cpp.html#_CPPv46Shader">Shader (C++ class)</a>
+</li>
+      <li><a href="api_cpp.html#_CPPv4N6Shader6Shader7compileER6GLuint6GLenumP6GLchar">Shader::Shader::compile (C++ function)</a>
+</li>
+      <li><a href="api_cpp.html#_CPPv4N6Shader6Shader12getProgramIdEv">Shader::Shader::getProgramId (C++ function)</a>
+</li>
+      <li><a href="api_cpp.html#_CPPv4N6Shader6Shader6ShaderEP6GLcharP6GLchar">Shader::Shader::Shader (C++ function)</a>
+</li>
+      <li><a href="api_cpp.html#_CPPv4N6Shader6ShaderD0Ev">Shader::Shader::~Shader (C++ function)</a>
+</li>
+      <li><a href="api_spot_interface.html#SpotInterface.shutdown">shutdown() (SpotInterface method)</a>
+
+      <ul>
+        <li><a href="api_zed.html#ZEDInterface.shutdown">(ZEDInterface method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_client.html#SpotClient">SpotClient (built-in class)</a>
+</li>
+      <li><a href="api_spot_interface.html#SpotInterface">SpotInterface (built-in class)</a>
+</li>
+      <li>
+    stream_loop_spot()
+
+      <ul>
+        <li><a href="api_spot_client.html#stream_loop_spot">built-in function</a>
+</li>
+      </ul></li>
+      <li>
+    stream_loop_zed()
+
+      <ul>
+        <li><a href="api_spot_client.html#stream_loop_zed">built-in function</a>
+</li>
+      </ul></li>
+      <li><a href="api_spot_client.html#SpotClient.sub_topic">sub_topic (SpotClient attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_cpp.html#_CPPv410ThreadData">ThreadData (C++ struct)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_oculus.html#topic">topic (built-in variable)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_controller.html#VELOCITY_BASE_ANGULAR">VELOCITY_BASE_ANGULAR (built-in variable)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_spot_controller.html#VELOCITY_BASE_SPEED">VELOCITY_BASE_SPEED (built-in variable)</a>
+</li>
+      <li><a href="api_spot_interface.html#VELOCITY_CMD_DURATION">VELOCITY_CMD_DURATION (built-in variable)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_zed.html#ZEDInterface">ZEDInterface (built-in class)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RICE Lab — DIBRIS, University of Genova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

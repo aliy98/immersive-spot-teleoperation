@@ -2,6 +2,18 @@
 
 This repository contains a modular software architecture designed for immersive teleoperation of the Boston Dynamics Spot robot using the Meta Quest 2.
 
+### Documentation
+
+Sphinx sources live in ``docs/`` and follow the *Technical approach* section of the manuscript. Build locally:
+
+```
+cd docs
+pip install -r requirements.txt
+make html
+```
+
+Open ``docs/_build/html/index.html``. A Read the Docs config is provided as ``.readthedocs.yaml``. Pages cover architecture, the LQR torso controller, GStreamer/RTSP pipelines, installation, usage, and the Python API.
+
 
 **Authors:** 
   - Ali Yousefi, ali.yousefi@edu.unige.it

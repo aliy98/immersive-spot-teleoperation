@@ -1,3 +1,24 @@
+/**
+ * @file main.cpp
+ * @brief Operator-side Oculus client: RTSP receive, stereo OpenGL present, input pipe.
+ *
+ * Responsibilities
+ * ----------------
+ * 1. Open a GStreamer / OpenCV VideoCapture on
+ *    `rtsp://<cloud-ip>:8554/spot-stream`.
+ * 2. Split each side-by-side frame into left/right `cv::Mat`s on a capture
+ *    thread (`__capture_runner__`) guarded by `ThreadData`.
+ * 3. Upload both images as GL textures (`BindCVMat2GLTexture`) and draw a
+ *    full-screen quad per eye with the shaders in `OVR_ZED_VS` / `OVR_ZED_FS`
+ *    through the Oculus PC SDK swap chain.
+ * 4. Convert the HMD pose quaternion to RPY (`quaternionToRPY`) and, together
+ *    with the Quest thumbstick axes, pack six floats into the named pipe
+ *    `\\.\pipe\MyPipe` consumed by `scripts/oculus_client.py`.
+ *
+ * Command line (see README)::
+ *
+ *     "ZED Stereo Passthrough.exe" <cloud-server-public-ip> ZED
+ */
 #define NOMINMAX
 
 #include <stdio.h>

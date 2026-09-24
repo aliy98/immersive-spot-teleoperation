@@ -1,12 +1,25 @@
 #!/usr/bin/env python
-"""
-.. module:: spot_interface
-    :platform: Windows
-    :synopsis: The spot_interface python script in ``zed-oculus-spot`` package
+"""Boston Dynamics Spot SDK facade used by the Jetson control thread.
 
-.. moduleauthor:: Ali Yousefi <ali.yousefi@edu.unige.it>
-	Initializes the required service clients. Provides the required method for sending the control 
-    signals to the robot, and receving robot angular velocities.
+The class owns lease, e-stop, power, state and command clients, stands
+the robot at start-up, and exposes:
+
+* :meth:`SpotInterface.set_controls` — apply LQR torso increments and
+  heading-frame velocities through the black-box whole-body controller.
+* :meth:`SpotInterface.get_body_orientation` — integrated pitch/yaw used
+  as the LQR measurement.
+* :meth:`SpotInterface.get_image` — optional stitched onboard cameras
+  when ``image_source == "SPOT"``.
+
+Attitude commands are saturated at ``MAX_PITCH`` / ``MAX_YAW``
+(0.5 rad ≈ 0.52 rad in the paper). Velocity commands expire after
+``VELOCITY_CMD_DURATION`` seconds so a dropped MQTT packet cannot leave
+the robot walking.
+
+Robot address and credentials are hard-coded for the payload LAN
+(``10.0.0.3``). Change them before deploying on another platform.
+
+Author: Ali Yousefi <ali.yousefi@edu.unige.it>
 """
 import logging
 import time
@@ -37,9 +50,14 @@ MAX_PITCH = 0.5
 
 
 class SpotInterface:
-    """
-        Defines the Lease, eStop, Power, RobotState, and RobotCommand clients. Provides the required method for sending the control 
-        signals to the robot ``set_controls(controls, dt)``, and receving robot angular velocities ``get_body_vel()``.
+    """SDK wrapper around Spot's whole-body controller.
+
+    Parameters
+    ----------
+    image_source : str
+        ``"ZED"`` uses the external stereo camera (no Spot image client).
+        ``"SPOT"`` instantiates ``ImageClient`` plus a ``Stitch`` helper
+        so :meth:`get_image` can publish the onboard pair.
     """
     def __init__(self, image_source):
         self._image_source = image_source
@@ -231,6 +249,13 @@ class SpotInterface:
             self._lease_keepalive.shutdown()
 
     def get_image(self):
+        """Return one stitched onboard frame (only if ``image_source=="SPOT"``).
+
+        Returns
+        -------
+        numpy.ndarray
+            Grayscale image produced by the optional ``Stitch`` helper.
+        """
         image = self._stitch.get_image()
         return image
         

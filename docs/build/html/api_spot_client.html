@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scripts/spot_client/spot_client.py &mdash; Immersive Spot Teleoperation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scripts/spot_client/spot_controller.py" href="api_spot_controller.html" />
+    <link rel="prev" title="API reference" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            immersive-spot-teleoperation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#problem">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-immersive-control">Why immersive control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-a-cloud-4g-architecture">Why a cloud + 4G architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#repository-layout">Repository layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">System architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#robot-client">Robot client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#cloud-server">Cloud server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#oculus-client">Oculus client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="control.html">High-level controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="control.html#torso-orientation-task-2-dof">Torso-orientation task (2 DoF)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="control.html#lqr">LQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html#saturation">Saturation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#locomotion-task-3-dof">Locomotion task (3 DoF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#parallel-execution">Parallel execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Real-time streaming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#element-key">Element key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#transmitter-jetson">Transmitter (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#receiver-windows">Receiver (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#why-this-stack">Why this stack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#operator-pc-windows-64-bit">Operator PC (Windows 64-bit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#jetson-nano-ubuntu-18-04">Jetson Nano (Ubuntu 18.04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#cloud-vm">Cloud VM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#building-this-documentation">Building this documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#cloud">1. Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#robot-jetson">2. Robot (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-windows">3. Operator (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-mapping">Operator mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#safety">Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#metrics-scripts">Metrics scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#message-and-command-layouts">Message and command layouts</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#SpotClient"><code class="docutils literal notranslate"><span class="pre">SpotClient</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stream_loop_zed"><code class="docutils literal notranslate"><span class="pre">stream_loop_zed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stream_loop_spot"><code class="docutils literal notranslate"><span class="pre">stream_loop_spot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_controller.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_controller.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_controller.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_interface.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_interface.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_zed.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/zed_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_zed.html#ZEDInterface"><code class="docutils literal notranslate"><span class="pre">ZEDInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_oculus.html"><code class="docutils literal notranslate"><span class="pre">scripts/oculus_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_oculus.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_metrics.html">Evaluation scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-record-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/record_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-plot-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/plot_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-stats-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/stats_metrics.py</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_cpp.html">C++ operator client</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#include-shader-hpp-src-shader-cpp"><code class="docutils literal notranslate"><span class="pre">include/Shader.hpp</span></code> / <code class="docutils literal notranslate"><span class="pre">src/Shader.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#src-main-cpp"><code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#cmake-target">CMake target</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="citing.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">immersive-spot-teleoperation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">API reference</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api_spot_client.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scripts-spot-client-spot-client-py">
+<h1><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code><a class="headerlink" href="#scripts-spot-client-spot-client-py" title="Link to this heading"></a></h1>
+<p>Jetson process entry point. Starts a GStreamer publisher thread and an
+MQTT control thread.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="SpotClient">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SpotClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">broker_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpotClient" title="Link to this definition"></a></dt>
+<dd><p>Robot-side MQTT subscriber and control-thread owner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>broker_address</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Public IPv4 of the Mosquitto / MediaMTX VM.</p></li>
+<li><p><strong>image_source</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;ZED&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;SPOT&quot;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SpotClient.sub_topic">
+<span class="sig-name descname"><span class="pre">sub_topic</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;oculus/inputs&quot;</span></span><a class="headerlink" href="#SpotClient.sub_topic" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SpotClient.inputs">
+<span class="sig-name descname"><span class="pre">inputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#SpotClient.inputs" title="Link to this definition"></a></dt>
+<dd><p>Latest HMD + thumbstick sample, mutated by <a class="reference internal" href="#SpotClient.on_message" title="SpotClient.on_message"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_message()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SpotClient.flag_connected">
+<span class="sig-name descname"><span class="pre">flag_connected</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#SpotClient.flag_connected" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">1</span></code> while the 4G probe succeeds; otherwise <a class="reference internal" href="#SpotClient.reconnect" title="SpotClient.reconnect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reconnect()</span></code></a> runs
+instead of <a class="reference internal" href="api_spot_interface.html#SpotInterface.set_controls" title="SpotInterface.set_controls"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SpotInterface.set_controls()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SpotClient.on_connect">
+<span class="sig-name descname"><span class="pre">on_connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpotClient.on_connect" title="Link to this definition"></a></dt>
+<dd><p>Subscribe to <code class="docutils literal notranslate"><span class="pre">oculus/inputs</span></code> after CONNACK.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SpotClient.on_message">
+<span class="sig-name descname"><span class="pre">on_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SpotClient.on_message" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">json.loads</span></code> the payload into <a class="reference internal" href="#SpotClient.inputs" title="SpotClient.inputs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">inputs</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SpotClient.reconnect">
+<span class="sig-name descname"><span class="pre">reconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SpotClient.reconnect" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">simcom_wwan&#64;wwan0.service</span></code> then sleep 30 s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SpotClient.control_loop">
+<span class="sig-name descname"><span class="pre">control_loop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SpotClient.control_loop" title="Link to this definition"></a></dt>
+<dd><p>Forever:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_setpoints(inputs[0:3])</span></code> — HMD reference.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_body_orientation()</span></code> — integrated robot pitch/yaw.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_hmd_controls</span></code> + <code class="docutils literal notranslate"><span class="pre">get_touch_controls(inputs[3:6])</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set_controls(hmd</span> <span class="pre">+</span> <span class="pre">touch)</span></code> if the uplink is up.</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">KeyboardInterrupt</span></code> sits the robot and closes MQTT.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stream_loop_zed">
+<span class="sig-name descname"><span class="pre">stream_loop_zed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">broker_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stream_loop_zed" title="Link to this definition"></a></dt>
+<dd><p>Open <a class="reference internal" href="api_zed.html#ZEDInterface" title="ZEDInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZEDInterface</span></code></a> and a <code class="docutils literal notranslate"><span class="pre">cv2.VideoWriter</span></code> whose pipeline is
+the NVIDIA hardware encoder at 3 Mbit/s, <code class="docutils literal notranslate"><span class="pre">GRAY8</span> <span class="pre">1280×240</span> <span class="pre">&#64;</span> <span class="pre">60</span></code>.
+Writes every <code class="docutils literal notranslate"><span class="pre">get_image()</span></code> frame to MediaMTX over TCP.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stream_loop_spot">
+<span class="sig-name descname"><span class="pre">stream_loop_spot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">broker_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stream_loop_spot" title="Link to this definition"></a></dt>
+<dd><p>Same idea using the onboard cameras via
+<a class="reference internal" href="api_spot_interface.html#SpotInterface.get_image" title="SpotInterface.get_image"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SpotInterface.get_image()</span></code></a>, <code class="docutils literal notranslate"><span class="pre">960×640</span> <span class="pre">&#64;</span> <span class="pre">30</span></code>, 0.6 Mbit/s.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main">
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">broker_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#main" title="Link to this definition"></a></dt>
+<dd><p>Dispatch on <code class="docutils literal notranslate"><span class="pre">image_source</span></code> and start both threads.</p>
+</dd></dl>
+
+<section id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python spot_client.py [ip_address] [image_source]
+</pre></div>
+</div>
+<p>Defaults: <code class="docutils literal notranslate"><span class="pre">34.16.188.15</span></code>, <code class="docutils literal notranslate"><span class="pre">ZED</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api.html" class="btn btn-neutral float-left" title="API reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_spot_controller.html" class="btn btn-neutral float-right" title="scripts/spot_client/spot_controller.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RICE Lab — DIBRIS, University of Genova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

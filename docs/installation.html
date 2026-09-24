@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; Immersive Spot Teleoperation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="Real-time streaming" href="streaming.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            immersive-spot-teleoperation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#problem">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-immersive-control">Why immersive control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-a-cloud-4g-architecture">Why a cloud + 4G architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#repository-layout">Repository layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">System architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#robot-client">Robot client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#cloud-server">Cloud server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#oculus-client">Oculus client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="control.html">High-level controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="control.html#torso-orientation-task-2-dof">Torso-orientation task (2 DoF)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="control.html#lqr">LQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html#saturation">Saturation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#locomotion-task-3-dof">Locomotion task (3 DoF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#parallel-execution">Parallel execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Real-time streaming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#element-key">Element key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#transmitter-jetson">Transmitter (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#receiver-windows">Receiver (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#why-this-stack">Why this stack</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#operator-pc-windows-64-bit">Operator PC (Windows 64-bit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jetson-nano-ubuntu-18-04">Jetson Nano (Ubuntu 18.04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cloud-vm">Cloud VM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-this-documentation">Building this documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#cloud">1. Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#robot-jetson">2. Robot (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-windows">3. Operator (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-mapping">Operator mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#safety">Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#metrics-scripts">Metrics scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#message-and-command-layouts">Message and command layouts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_client.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#SpotClient"><code class="docutils literal notranslate"><span class="pre">SpotClient</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_zed"><code class="docutils literal notranslate"><span class="pre">stream_loop_zed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_spot"><code class="docutils literal notranslate"><span class="pre">stream_loop_spot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_controller.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_controller.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_controller.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_interface.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_interface.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_zed.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/zed_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_zed.html#ZEDInterface"><code class="docutils literal notranslate"><span class="pre">ZEDInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_oculus.html"><code class="docutils literal notranslate"><span class="pre">scripts/oculus_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_oculus.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_metrics.html">Evaluation scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-record-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/record_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-plot-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/plot_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-stats-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/stats_metrics.py</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_cpp.html">C++ operator client</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#include-shader-hpp-src-shader-cpp"><code class="docutils literal notranslate"><span class="pre">include/Shader.hpp</span></code> / <code class="docutils literal notranslate"><span class="pre">src/Shader.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#src-main-cpp"><code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#cmake-target">CMake target</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="citing.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">immersive-spot-teleoperation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p>Three machines are required: the operator PC, the Jetson on Spot, and a
+cloud VM.</p>
+<section id="operator-pc-windows-64-bit">
+<h2>Operator PC (Windows 64-bit)<a class="headerlink" href="#operator-pc-windows-64-bit" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Windows 10/11 x64</p></li>
+<li><p>Python ≥ 3.7</p></li>
+<li><p>CMake</p></li>
+<li><p>Visual Studio 2022</p></li>
+<li><p><a class="reference external" href="https://developer.oculus.com/downloads/package/oculus-sdk-for-windows/">Oculus SDK for Windows</a> ≥ 1.17</p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/cuda-downloads">CUDA Toolkit</a></p></li>
+<li><p>GLEW (shipped with the ZED SDK)</p></li>
+<li><p><a class="reference external" href="https://github.com/libsdl-org/SDL/releases/tag/release-2.30.1">SDL2</a></p></li>
+<li><p><a class="reference external" href="https://gstreamer.freedesktop.org/documentation/installing/on-windows.html">GStreamer</a></p></li>
+<li><p>OpenCV <strong>built with GStreamer</strong>
+(<a class="reference external" href="https://galaktyk.medium.com/how-to-build-opencv-with-gstreamer-b11668fa09c">tutorial</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">paho-mqtt</span></code> (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">paho-mqtt</span></code>)</p></li>
+<li><p>ZED SDK 3.x</p></li>
+</ul>
+<p>CMake cache variables that must be set (see root <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>):</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="err">OCULUS_PATH</span><span class="w">   </span><span class="c"># e.g. C:\ovr_sdk_win_0.17.0\OculusSDK</span>
+<span class="err">SDL_PATH</span><span class="w">      </span><span class="c"># e.g. C:\SDL2-2.0.3</span>
+</pre></div>
+</div>
+<p>Build steps:</p>
+<ol class="arabic simple">
+<li><p>Clone the repository and create a <code class="docutils literal notranslate"><span class="pre">build</span></code> folder in the root.</p></li>
+<li><p>Open <em>cmake-gui</em>, set the source and build folders.</p></li>
+<li><p>Generate a Visual Studio Win64 solution.</p></li>
+<li><p>Open the solution, switch to <strong>Release</strong>, fix any dependency paths.</p></li>
+<li><p>Build. The target name is <code class="docutils literal notranslate"><span class="pre">ZED</span> <span class="pre">Stereo</span> <span class="pre">Passthrough</span></code>.</p></li>
+</ol>
+<p>The project is C++11 and links ZED, CUDA, OpenGL, GLEW, SDL2, and
+LibOVR.</p>
+</section>
+<section id="jetson-nano-ubuntu-18-04">
+<h2>Jetson Nano (Ubuntu 18.04)<a class="headerlink" href="#jetson-nano-ubuntu-18-04" title="Link to this heading"></a></h2>
+<p>No C++ build is required. Clone <code class="docutils literal notranslate"><span class="pre">scripts/spot_client/</span></code> onto the board
+and install:</p>
+<ul class="simple">
+<li><p>Python ≥ 3.7</p></li>
+<li><p><a class="reference external" href="https://dev.bostondynamics.com/">Boston Dynamics Spot SDK</a></p></li>
+<li><p>ZED SDK 3.x and the <a class="reference external" href="https://www.stereolabs.com/docs/app-development/python/install">ZED Python API</a></p></li>
+<li><p>GStreamer</p></li>
+<li><p>OpenCV built with GStreamer</p></li>
+<li><p><a class="reference external" href="https://www.do-mpc.com/en/latest/installation.html">do-mpc</a> (pulls CasADi)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">paho-mqtt</span></code></p></li>
+</ul>
+<p>The interface authenticates to Spot at <code class="docutils literal notranslate"><span class="pre">10.0.0.3</span></code>. Edit
+<code class="docutils literal notranslate"><span class="pre">spot_interface.py</span></code> if your payload network uses a different address
+or credentials.</p>
+</section>
+<section id="cloud-vm">
+<h2>Cloud VM<a class="headerlink" href="#cloud-vm" title="Link to this heading"></a></h2>
+<p>Create a public-IP VM on Google Cloud or Microsoft Azure and install:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/bluenviron/mediamtx">MediaMTX</a></p></li>
+<li><p><a class="reference external" href="https://mosquitto.org/download/">Mosquitto</a></p></li>
+</ul>
+<p>Open TCP 8554 (RTSP) and 1883 (MQTT) on the firewall. Bind MediaMTX to
+<code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code>.</p>
+</section>
+<section id="building-this-documentation">
+<h2>Building this documentation<a class="headerlink" href="#building-this-documentation" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+make<span class="w"> </span>html
+<span class="c1"># output: docs/_build/html/index.html</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="streaming.html" class="btn btn-neutral float-left" title="Real-time streaming" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RICE Lab — DIBRIS, University of Genova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

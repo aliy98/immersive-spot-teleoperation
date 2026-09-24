@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C++ operator client &mdash; Immersive Spot Teleoperation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script>window.MathJax = {"tex": {"macros": {"ROB": "{\\mathrm{ROB}}", "HMD": "{\\mathrm{HMD}}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Citing" href="citing.html" />
+    <link rel="prev" title="Evaluation scripts" href="api_metrics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            immersive-spot-teleoperation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#problem">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-immersive-control">Why immersive control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-a-cloud-4g-architecture">Why a cloud + 4G architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#repository-layout">Repository layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">System architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#robot-client">Robot client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#cloud-server">Cloud server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#oculus-client">Oculus client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="control.html">High-level controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="control.html#torso-orientation-task-2-dof">Torso-orientation task (2 DoF)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="control.html#lqr">LQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html#saturation">Saturation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#locomotion-task-3-dof">Locomotion task (3 DoF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#parallel-execution">Parallel execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Real-time streaming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#element-key">Element key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#transmitter-jetson">Transmitter (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#receiver-windows">Receiver (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#why-this-stack">Why this stack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#operator-pc-windows-64-bit">Operator PC (Windows 64-bit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#jetson-nano-ubuntu-18-04">Jetson Nano (Ubuntu 18.04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#cloud-vm">Cloud VM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#building-this-documentation">Building this documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#cloud">1. Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#robot-jetson">2. Robot (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-windows">3. Operator (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-mapping">Operator mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#safety">Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#metrics-scripts">Metrics scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#message-and-command-layouts">Message and command layouts</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="api_spot_client.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#SpotClient"><code class="docutils literal notranslate"><span class="pre">SpotClient</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_zed"><code class="docutils literal notranslate"><span class="pre">stream_loop_zed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_spot"><code class="docutils literal notranslate"><span class="pre">stream_loop_spot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_controller.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_controller.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_controller.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_interface.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_interface.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_zed.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/zed_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_zed.html#ZEDInterface"><code class="docutils literal notranslate"><span class="pre">ZEDInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_oculus.html"><code class="docutils literal notranslate"><span class="pre">scripts/oculus_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_oculus.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_metrics.html">Evaluation scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-record-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/record_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-plot-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/plot_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-stats-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/stats_metrics.py</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">C++ operator client</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#include-shader-hpp-src-shader-cpp"><code class="docutils literal notranslate"><span class="pre">include/Shader.hpp</span></code> / <code class="docutils literal notranslate"><span class="pre">src/Shader.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#src-main-cpp"><code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cmake-target">CMake target</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="citing.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">immersive-spot-teleoperation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">API reference</a></li>
+      <li class="breadcrumb-item active">C++ operator client</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api_cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="c-operator-client">
+<h1>C++ operator client<a class="headerlink" href="#c-operator-client" title="Link to this heading"></a></h1>
+<section id="include-shader-hpp-src-shader-cpp">
+<h2><code class="docutils literal notranslate"><span class="pre">include/Shader.hpp</span></code> / <code class="docutils literal notranslate"><span class="pre">src/Shader.cpp</span></code><a class="headerlink" href="#include-shader-hpp-src-shader-cpp" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46Shader">
+<span id="_CPPv36Shader"></span><span id="_CPPv26Shader"></span><span id="Shader"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Shader</span></span></span><a class="headerlink" href="#_CPPv46Shader" title="Link to this definition"></a><br /></dt>
+<dd><p>Compiles a vertex + fragment string, binds attribute locations and
+links a GL program used to draw one eye quad.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Shader6Shader6ShaderEP6GLcharP6GLchar">
+<span id="_CPPv3N6Shader6Shader6ShaderEP6GLcharP6GLchar"></span><span id="_CPPv2N6Shader6Shader6ShaderEP6GLcharP6GLchar"></span><span id="Shader::Shader::Shader__GLcharP.GLcharP"></span><span class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N6Shader6Shader6ShaderEP6GLcharP6GLchar" title="Shader::Shader::Shader"><span class="n"><span class="pre">Shader</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">Shader</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">GLchar</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vs</span></span>, <span class="n"><span class="pre">GLchar</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Shader6Shader6ShaderEP6GLcharP6GLchar" title="Link to this definition"></a><br /></dt>
+<dd><p>Compile, attach, <code class="docutils literal notranslate"><span class="pre">glBindAttribLocation</span></code> for <code class="docutils literal notranslate"><span class="pre">in_vertex</span></code> /
+<code class="docutils literal notranslate"><span class="pre">in_texCoord</span></code>, link, print the info log on failure.</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Shader6ShaderD0Ev">
+<span id="_CPPv3N6Shader6ShaderD0Ev"></span><span id="_CPPv2N6Shader6ShaderD0Ev"></span><span id="Shader::Shader::~Shader"></span><span class="sig-prename descclassname"><span class="n"><span class="pre">Shader</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">~Shader</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Shader6ShaderD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">glDeleteShader</span></code> / <code class="docutils literal notranslate"><span class="pre">glDeleteProgram</span></code>.</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Shader6Shader12getProgramIdEv">
+<span id="_CPPv3N6Shader6Shader12getProgramIdEv"></span><span id="_CPPv2N6Shader6Shader12getProgramIdEv"></span><span id="Shader::Shader::getProgramId"></span><span class="n"><span class="pre">GLuint</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">Shader</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">getProgramId</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Shader6Shader12getProgramIdEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Linked program name.</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Shader6Shader7compileER6GLuint6GLenumP6GLchar">
+<span id="_CPPv3N6Shader6Shader7compileER6GLuint6GLenumP6GLchar"></span><span id="_CPPv2N6Shader6Shader7compileER6GLuint6GLenumP6GLchar"></span><span id="Shader::Shader::compile__GLuintR.GLenum.GLcharP"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">Shader</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">compile</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">GLuint</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">shaderId</span></span>, <span class="n"><span class="pre">GLenum</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="n"><span class="pre">GLchar</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">src</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Shader6Shader7compileER6GLuint6GLenumP6GLchar" title="Link to this definition"></a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">glCreateShader</span></code> + <code class="docutils literal notranslate"><span class="pre">glCompileShader</span></code>; returns <code class="docutils literal notranslate"><span class="pre">false</span></code> and
+dumps the log on error.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="src-main-cpp">
+<h2><code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code><a class="headerlink" href="#src-main-cpp" title="Link to this heading"></a></h2>
+<p>Operator-side executable <code class="docutils literal notranslate"><span class="pre">ZED</span> <span class="pre">Stereo</span> <span class="pre">Passthrough</span></code> (CMake
+<code class="docutils literal notranslate"><span class="pre">OUTPUT_NAME</span></code>). Responsibilities:</p>
+<ol class="arabic simple">
+<li><p>Open an OpenCV <code class="docutils literal notranslate"><span class="pre">VideoCapture</span></code> on
+<code class="docutils literal notranslate"><span class="pre">rtsp://&lt;cloud-ip&gt;:8554/spot-stream</span></code> (GStreamer backend).</p></li>
+<li><p>Split each side-by-side frame into left/right <code class="docutils literal notranslate"><span class="pre">cv::Mat</span></code> on a
+capture thread.</p></li>
+<li><p>Upload both as GL textures and present through the Oculus PC SDK
+swap chain with the embedded shaders <code class="docutils literal notranslate"><span class="pre">OVR_ZED_VS</span></code> / <code class="docutils literal notranslate"><span class="pre">OVR_ZED_FS</span></code>.
+The fragment shader swizzles BGR because OpenCV stores that order.</p></li>
+<li><p>Convert the HMD pose quaternion to roll/pitch/yaw and, with the two
+Quest thumbsticks, pack six floats into <code class="docutils literal notranslate"><span class="pre">\\.\pipe\MyPipe</span></code>.</p></li>
+</ol>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410ThreadData">
+<span id="_CPPv310ThreadData"></span><span id="_CPPv210ThreadData"></span><span id="ThreadData"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ThreadData</span></span></span><a class="headerlink" href="#_CPPv410ThreadData" title="Link to this definition"></a><br /></dt>
+<dd><p>Shared state for the capture thread: <code class="docutils literal notranslate"><span class="pre">mutex</span></code>, <code class="docutils literal notranslate"><span class="pre">leftImage</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rightImage</span></code>, <code class="docutils literal notranslate"><span class="pre">run</span></code>, <code class="docutils literal notranslate"><span class="pre">new_frame</span></code>.</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419BindCVMat2GLTextureRN2cv3MatER6GLuint">
+<span id="_CPPv319BindCVMat2GLTextureRN2cv3MatER6GLuint"></span><span id="_CPPv219BindCVMat2GLTextureRN2cv3MatER6GLuint"></span><span id="BindCVMat2GLTexture__cv::MatR.GLuintR"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BindCVMat2GLTexture</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">cv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Mat</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">image</span></span>, <span class="n"><span class="pre">GLuint</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">imageTexture</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419BindCVMat2GLTextureRN2cv3MatER6GLuint" title="Link to this definition"></a><br /></dt>
+<dd><p>Allocate a <code class="docutils literal notranslate"><span class="pre">GL_TEXTURE_2D</span></code>, <code class="docutils literal notranslate"><span class="pre">RGB2BGR</span></code>, <code class="docutils literal notranslate"><span class="pre">glTexImage2D</span></code>.</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418__capture_runner__R10ThreadDataN2cv12VideoCaptureE">
+<span id="_CPPv318__capture_runner__R10ThreadDataN2cv12VideoCaptureE"></span><span id="_CPPv218__capture_runner__R10ThreadDataN2cv12VideoCaptureE"></span><span id="__capture_runner____ThreadDataR.cv::VideoCapture"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">__capture_runner__</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410ThreadData" title="ThreadData"><span class="n"><span class="pre">ThreadData</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">thread_data</span></span>, <span class="n"><span class="pre">cv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VideoCapture</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cv_capture</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418__capture_runner__R10ThreadDataN2cv12VideoCaptureE" title="Link to this definition"></a><br /></dt>
+<dd><p>Loop while <code class="docutils literal notranslate"><span class="pre">thread_data.run</span></code>: <code class="docutils literal notranslate"><span class="pre">read</span></code> a frame, slice left/right
+halves, set <code class="docutils literal notranslate"><span class="pre">new_frame</span></code>.</p>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv43RPY">
+<span id="_CPPv33RPY"></span><span id="_CPPv23RPY"></span><span id="RPY"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RPY</span></span></span><a class="headerlink" href="#_CPPv43RPY" title="Link to this definition"></a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">roll,</span> <span class="pre">pitch,</span> <span class="pre">yaw</span></code>.</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415quaternionToRPY16ovrTrackingState">
+<span id="_CPPv315quaternionToRPY16ovrTrackingState"></span><span id="_CPPv215quaternionToRPY16ovrTrackingState"></span><span id="quaternionToRPY__ovrTrackingState"></span><a class="reference internal" href="#_CPPv43RPY" title="RPY"><span class="n"><span class="pre">RPY</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quaternionToRPY</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ovrTrackingState</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ts</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415quaternionToRPY16ovrTrackingState" title="Link to this definition"></a><br /></dt>
+<dd><p>Standard quaternion-to-Euler conversion of
+<code class="docutils literal notranslate"><span class="pre">ts.HeadPose.ThePose.Orientation</span></code>. Pitch sign is inverted later to
+match the robot body-fixed frame (see the LQR reference
+<span class="math notranslate nohighlight">\(x^\ast = [-\phi^{\mathrm{HMD}}, \psi^{\mathrm{HMD}}]^T\)</span>).</p>
+</dd></dl>
+
+</section>
+<section id="cmake-target">
+<h2>CMake target<a class="headerlink" href="#cmake-target" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> project name <code class="docutils literal notranslate"><span class="pre">ZED_Stereo_Passthrough</span></code>. Required
+cache variables: <code class="docutils literal notranslate"><span class="pre">OCULUS_PATH</span></code>, <code class="docutils literal notranslate"><span class="pre">SDL_PATH</span></code>. Links ZED 3, CUDA,
+OpenGL, GLEW, SDL2, LibOVR.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api_metrics.html" class="btn btn-neutral float-left" title="Evaluation scripts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="citing.html" class="btn btn-neutral float-right" title="Citing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RICE Lab — DIBRIS, University of Genova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

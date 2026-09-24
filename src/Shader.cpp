@@ -1,3 +1,7 @@
+/**
+ * @file Shader.cpp
+ * @brief Implementation of Shader: compile, attach, link, report GL logs.
+ */
 #include "Shader.hpp"
 #include <iostream>
 

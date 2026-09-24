@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System architecture &mdash; Immersive Spot Teleoperation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script>window.MathJax = {"tex": {"macros": {"ROB": "{\\mathrm{ROB}}", "HMD": "{\\mathrm{HMD}}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="High-level controller" href="control.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            immersive-spot-teleoperation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#problem">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-immersive-control">Why immersive control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-a-cloud-4g-architecture">Why a cloud + 4G architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#repository-layout">Repository layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">System architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#robot-client">Robot client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cloud-server">Cloud server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oculus-client">Oculus client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="control.html">High-level controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="control.html#torso-orientation-task-2-dof">Torso-orientation task (2 DoF)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="control.html#lqr">LQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html#saturation">Saturation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#locomotion-task-3-dof">Locomotion task (3 DoF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control.html#parallel-execution">Parallel execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Real-time streaming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#element-key">Element key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#transmitter-jetson">Transmitter (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#receiver-windows">Receiver (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#why-this-stack">Why this stack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#operator-pc-windows-64-bit">Operator PC (Windows 64-bit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#jetson-nano-ubuntu-18-04">Jetson Nano (Ubuntu 18.04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#cloud-vm">Cloud VM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#building-this-documentation">Building this documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#cloud">1. Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#robot-jetson">2. Robot (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-windows">3. Operator (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-mapping">Operator mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#safety">Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#metrics-scripts">Metrics scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#message-and-command-layouts">Message and command layouts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_client.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#SpotClient"><code class="docutils literal notranslate"><span class="pre">SpotClient</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_zed"><code class="docutils literal notranslate"><span class="pre">stream_loop_zed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_spot"><code class="docutils literal notranslate"><span class="pre">stream_loop_spot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_controller.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_controller.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_controller.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_interface.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_interface.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_zed.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/zed_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_zed.html#ZEDInterface"><code class="docutils literal notranslate"><span class="pre">ZEDInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_oculus.html"><code class="docutils literal notranslate"><span class="pre">scripts/oculus_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_oculus.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_metrics.html">Evaluation scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-record-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/record_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-plot-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/plot_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-stats-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/stats_metrics.py</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_cpp.html">C++ operator client</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#include-shader-hpp-src-shader-cpp"><code class="docutils literal notranslate"><span class="pre">include/Shader.hpp</span></code> / <code class="docutils literal notranslate"><span class="pre">src/Shader.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#src-main-cpp"><code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#cmake-target">CMake target</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="citing.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">immersive-spot-teleoperation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">System architecture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/architecture.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="system-architecture">
+<h1>System architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h1>
+<p>The architecture comprises three nodes: the <strong>robot client</strong>, the
+<strong>cloud server</strong>, and the <strong>Oculus client</strong>.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/network.png"><img alt="System architecture" src="_images/network.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">System architecture.
+(1) Robot client: streaming thread for video acquisition and a control
+thread for head-orientation tracking and locomotion.
+(2) Cloud server: RTSP for video and MQTT for control.
+(3) Oculus client: streaming thread for video feedback and an input
+thread for HMD and thumbstick commands.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="robot-client">
+<h2>Robot client<a class="headerlink" href="#robot-client" title="Link to this heading"></a></h2>
+<p>Spot carries an NVIDIA Jetson Nano in a 3D-printed payload case together
+with a ZED 2, a power module, and a SIM7600G-H 4G dongle.</p>
+<p><strong>Streaming thread</strong></p>
+<ul class="simple">
+<li><p>Captures stereo images from the ZED 2 at <span class="math notranslate nohighlight">\(1280 \times 720\)</span> and
+<span class="math notranslate nohighlight">\(60\,\mathrm{fps}\)</span> in OpenCV format.</p></li>
+<li><p>Adjusts the frames so the displayed field of view is comparable to the
+stock Spot tablet (fair comparison in the user study).</p></li>
+<li><p>Injects frames into the GStreamer transmitter pipeline
+(see <a class="reference internal" href="streaming.html"><span class="doc">Real-time streaming</span></a>).</p></li>
+<li><p>Reaches the cloud through the 4G dongle.</p></li>
+</ul>
+<p><strong>Control thread</strong></p>
+<ul class="simple">
+<li><p>Subscribes to MQTT topic <code class="docutils literal notranslate"><span class="pre">oculus/inputs</span></code>.</p></li>
+<li><p>Runs head-orientation tracking (LQR) and locomotion (dead-zone
+thumbstick map).</p></li>
+<li><p>An inner loop measures robot orientation from the Boston Dynamics
+state service and applies the orientation commands through the
+whole-body controller.</p></li>
+</ul>
+<p>Entry point: <code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code>.</p>
+<p>If the 4G interface drops, the client restarts the <code class="docutils literal notranslate"><span class="pre">simcom_wwan</span></code>
+service and waits before resuming commands.</p>
+</section>
+<section id="cloud-server">
+<h2>Cloud server<a class="headerlink" href="#cloud-server" title="Link to this heading"></a></h2>
+<p>A Google Cloud or Microsoft Azure virtual machine with a public IPv4
+address hosts:</p>
+<ul>
+<li><p><strong>MediaMTX</strong> — RTSP server. Default publish/play URL used by the
+clients:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rtsp</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">public</span><span class="o">-</span><span class="n">ip</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">8554</span><span class="o">/</span><span class="n">spot</span><span class="o">-</span><span class="n">stream</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Mosquitto</strong> — MQTT broker on port 1883. Control topic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">oculus</span><span class="o">/</span><span class="n">inputs</span>
+</pre></div>
+</div>
+<p>Payload: a JSON array of six floats
+<code class="docutils literal notranslate"><span class="pre">[pitch,</span> <span class="pre">yaw,</span> <span class="pre">roll,</span> <span class="pre">stick_x,</span> <span class="pre">stick_y,</span> <span class="pre">stick_rot]</span></code> published at
+<span class="math notranslate nohighlight">\(20\,\mathrm{Hz}\)</span> (50 ms period in <code class="docutils literal notranslate"><span class="pre">oculus_client.py</span></code>).</p>
+</li>
+</ul>
+</section>
+<section id="oculus-client">
+<h2>Oculus client<a class="headerlink" href="#oculus-client" title="Link to this heading"></a></h2>
+<p>A Windows 11 PC is tethered to a Meta Quest 2 HMD and controllers.
+The evaluation machine was an ASUS G713PI (AMD Ryzen 9 7845HX, NVIDIA
+GeForce RTX 4070, 16 GB RAM). Two threads run on the PC:</p>
+<ul class="simple">
+<li><p><strong>Streaming thread</strong> (<code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code>, executable
+<code class="docutils literal notranslate"><span class="pre">ZED</span> <span class="pre">Stereo</span> <span class="pre">Passthrough</span></code>) — pulls the RTSP stream through GStreamer,
+decodes H.264, and renders left/right images to the HMD with OpenGL
+and the Oculus PC SDK.</p></li>
+<li><p><strong>Input thread</strong> — reads HMD IMU measurements and thumbstick axes and
+writes a 6-float binary record to a Windows named pipe
+<code class="docutils literal notranslate"><span class="pre">\\.\pipe\MyPipe</span></code>. <code class="docutils literal notranslate"><span class="pre">scripts/oculus_client.py</span></code> reads that pipe and
+publishes JSON to MQTT.</p></li>
+</ul>
+</section>
+<section id="coordinate-frames">
+<h2>Coordinate frames<a class="headerlink" href="#coordinate-frames" title="Link to this heading"></a></h2>
+<figure class="align-left">
+<a class="reference internal image-reference" href="_images/spotframe.jpg"><img alt="Spot body frame" src="_images/spotframe.jpg" style="width: 42%;" />
+</a>
+</figure>
+<figure class="align-right">
+<a class="reference internal image-reference" href="_images/oculusframe.jpg"><img alt="HMD frame" src="_images/oculusframe.jpg" style="width: 38%;" />
+</a>
+</figure>
+<p>Frame definitions for the Spot base (left) and the HMD (right).
+Pitch in the HMD frame is defined in the opposite direction of the
+robot body-fixed pitch, which is why the LQR reference uses
+<span class="math notranslate nohighlight">\(-\phi_k^{\mathrm{HMD}}\)</span>.</p>
+<p>See Boston Dynamics
+<a class="reference external" href="https://dev.bostondynamics.com/docs/concepts/geometry_and_frames.html">geometry and frames</a>
+and Meta
+<a class="reference external" href="https://developer.oculus.com/documentation/native/pc/dg-sensor/">sensor documentation</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="control.html" class="btn btn-neutral float-right" title="High-level controller" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RICE Lab — DIBRIS, University of Genova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

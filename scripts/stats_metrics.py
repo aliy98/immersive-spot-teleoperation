@@ -1,3 +1,6 @@
+"""Print mean/std/min/max/median of the columns in ``metrics_data.csv``.
+"""
+
 import csv
 import numpy as np
 

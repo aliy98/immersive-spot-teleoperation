@@ -1,3 +1,6 @@
+"""Plot FPS/bitrate and latency/jitter from ``metrics_data.csv``.
+"""
+
 import matplotlib.pyplot as plt
 import csv
 

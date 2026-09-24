@@ -1,0 +1,84 @@
+C++ operator client
+===================
+
+``include/Shader.hpp`` / ``src/Shader.cpp``
+-------------------------------------------
+
+.. cpp:class:: Shader
+
+   Compiles a vertex + fragment string, binds attribute locations and
+   links a GL program used to draw one eye quad.
+
+   .. cpp:function:: Shader::Shader(GLchar* vs, GLchar* fs)
+
+      Compile, attach, ``glBindAttribLocation`` for ``in_vertex`` /
+      ``in_texCoord``, link, print the info log on failure.
+
+   .. cpp:function:: Shader::~Shader()
+
+      ``glDeleteShader`` / ``glDeleteProgram``.
+
+   .. cpp:function:: GLuint Shader::getProgramId()
+
+      Linked program name.
+
+   .. cpp:function:: bool Shader::compile(GLuint& shaderId, GLenum type, GLchar* src)
+
+      ``glCreateShader`` + ``glCompileShader``; returns ``false`` and
+      dumps the log on error.
+
+   .. cpp:member:: static const GLint Shader::ATTRIB_VERTICES_POS
+
+      Equals ``0`` (``in_vertex``).
+
+   .. cpp:member:: static const GLint Shader::ATTRIB_TEXTURE2D_POS
+
+      Equals ``1`` (``in_texCoord``).
+
+``src/main.cpp``
+----------------
+
+Operator-side executable ``ZED Stereo Passthrough`` (CMake
+``OUTPUT_NAME``). Responsibilities:
+
+1. Open an OpenCV ``VideoCapture`` on
+   ``rtsp://<cloud-ip>:8554/spot-stream`` (GStreamer backend).
+2. Split each side-by-side frame into left/right ``cv::Mat`` on a
+   capture thread.
+3. Upload both as GL textures and present through the Oculus PC SDK
+   swap chain with the embedded shaders ``OVR_ZED_VS`` / ``OVR_ZED_FS``.
+   The fragment shader swizzles BGR because OpenCV stores that order.
+4. Convert the HMD pose quaternion to roll/pitch/yaw and, with the two
+   Quest thumbsticks, pack six floats into ``\\.\pipe\MyPipe``.
+
+.. cpp:struct:: ThreadData
+
+   Shared state for the capture thread: ``mutex``, ``leftImage``,
+   ``rightImage``, ``run``, ``new_frame``.
+
+.. cpp:function:: void BindCVMat2GLTexture(cv::Mat& image, GLuint& imageTexture)
+
+   Allocate a ``GL_TEXTURE_2D``, ``RGB2BGR``, ``glTexImage2D``.
+
+.. cpp:function:: void __capture_runner__(ThreadData& thread_data, cv::VideoCapture cv_capture)
+
+   Loop while ``thread_data.run``: ``read`` a frame, slice left/right
+   halves, set ``new_frame``.
+
+.. cpp:struct:: RPY
+
+   ``double roll, pitch, yaw``.
+
+.. cpp:function:: RPY quaternionToRPY(ovrTrackingState ts)
+
+   Standard quaternion-to-Euler conversion of
+   ``ts.HeadPose.ThePose.Orientation``. Pitch sign is inverted later to
+   match the robot body-fixed frame (see the LQR reference
+   :math:`x^\ast = [-\phi^{\mathrm{HMD}}, \psi^{\mathrm{HMD}}]^T`).
+
+CMake target
+------------
+
+``CMakeLists.txt`` project name ``ZED_Stereo_Passthrough``. Required
+cache variables: ``OCULUS_PATH``, ``SDL_PATH``. Links ZED 3, CUDA,
+OpenGL, GLEW, SDL2, LibOVR.

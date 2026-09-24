@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>High-level controller &mdash; Immersive Spot Teleoperation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script>window.MathJax = {"tex": {"macros": {"ROB": "{\\mathrm{ROB}}", "HMD": "{\\mathrm{HMD}}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Real-time streaming" href="streaming.html" />
+    <link rel="prev" title="System architecture" href="architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            immersive-spot-teleoperation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#problem">Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-immersive-control">Why immersive control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#why-a-cloud-4g-architecture">Why a cloud + 4G architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#repository-layout">Repository layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">System architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#robot-client">Robot client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#cloud-server">Cloud server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#oculus-client">Oculus client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">High-level controller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#torso-orientation-task-2-dof">Torso-orientation task (2 DoF)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lqr">LQR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#saturation">Saturation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#locomotion-task-3-dof">Locomotion task (3 DoF)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parallel-execution">Parallel execution</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">Real-time streaming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#element-key">Element key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#transmitter-jetson">Transmitter (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#receiver-windows">Receiver (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#why-this-stack">Why this stack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#operator-pc-windows-64-bit">Operator PC (Windows 64-bit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#jetson-nano-ubuntu-18-04">Jetson Nano (Ubuntu 18.04)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#cloud-vm">Cloud VM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#building-this-documentation">Building this documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#cloud">1. Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#robot-jetson">2. Robot (Jetson)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-windows">3. Operator (Windows)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#operator-mapping">Operator mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#safety">Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#metrics-scripts">Metrics scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#message-and-command-layouts">Message and command layouts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_client.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#SpotClient"><code class="docutils literal notranslate"><span class="pre">SpotClient</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_zed"><code class="docutils literal notranslate"><span class="pre">stream_loop_zed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#stream_loop_spot"><code class="docutils literal notranslate"><span class="pre">stream_loop_spot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_client.html#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_controller.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_controller.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_controller.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_spot_interface.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/spot_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_spot_interface.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_zed.html"><code class="docutils literal notranslate"><span class="pre">scripts/spot_client/zed_interface.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_zed.html#ZEDInterface"><code class="docutils literal notranslate"><span class="pre">ZEDInterface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_oculus.html"><code class="docutils literal notranslate"><span class="pre">scripts/oculus_client.py</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_oculus.html#module-constants">Module constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_metrics.html">Evaluation scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-record-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/record_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-plot-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/plot_metrics.py</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_metrics.html#scripts-stats-metrics-py"><code class="docutils literal notranslate"><span class="pre">scripts/stats_metrics.py</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_cpp.html">C++ operator client</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#include-shader-hpp-src-shader-cpp"><code class="docutils literal notranslate"><span class="pre">include/Shader.hpp</span></code> / <code class="docutils literal notranslate"><span class="pre">src/Shader.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#src-main-cpp"><code class="docutils literal notranslate"><span class="pre">src/main.cpp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_cpp.html#cmake-target">CMake target</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="citing.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">immersive-spot-teleoperation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">High-level controller</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/control.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="high-level-controller">
+<h1>High-level controller<a class="headerlink" href="#high-level-controller" title="Link to this heading"></a></h1>
+<p>Spot’s whole-body controller is treated as a black box. The high-level
+layer only commands torso pitch/yaw and heading-frame velocities.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/schema.png"><img alt="Control block diagram" src="_images/schema.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Block diagram of the control system. HMD and robot IMU measurements
+feed an LQR; joystick commands pass through a dead-zone policy.
+Both outputs go to the same whole-body controller.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="torso-orientation-task-2-dof">
+<h2>Torso-orientation task (2 DoF)<a class="headerlink" href="#torso-orientation-task-2-dof" title="Link to this heading"></a></h2>
+<p>The task tracks the pitch and yaw of the robot body-fixed frame at
+step <span class="math notranslate nohighlight">\(k\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\phi_k^{\mathrm{ROB}},\qquad \psi_k^{\mathrm{ROB}},\]</div>
+<p>using the HMD IMU angles <span class="math notranslate nohighlight">\(\phi_k^{\mathrm{HMD}}\)</span> and
+<span class="math notranslate nohighlight">\(\psi_k^{\mathrm{HMD}}\)</span> as references. <strong>Roll is ignored.</strong></p>
+<p>Because the low-level controller is a black box, the simplified
+discrete-time model is the integrator</p>
+<div class="math notranslate nohighlight">
+\[x_{k+1} = A x_k + B u_k,\]</div>
+<p>with <span class="math notranslate nohighlight">\(A = B = I^{2\times 2}\)</span>, state</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}x_k = \begin{bmatrix} \phi_k^{\mathrm{ROB}} \\ \psi_k^{\mathrm{ROB}} \end{bmatrix},\end{split}\]</div>
+<p>and <span class="math notranslate nohighlight">\(u_k \in \mathbb{R}^{2}\)</span>. Pitch in the HMD frame has the
+opposite sign, so the desired state is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}x_k^{\ast} = \begin{bmatrix} -\phi_k^{\mathrm{HMD}} \\ \psi_k^{\mathrm{HMD}} \end{bmatrix}.\end{split}\]</div>
+<p>The tracking error is <span class="math notranslate nohighlight">\(\tilde{x}_k = x_k - x_k^{\ast}\)</span>.</p>
+<section id="lqr">
+<h3>LQR<a class="headerlink" href="#lqr" title="Link to this heading"></a></h3>
+<p>An infinite-horizon discrete LQR minimises</p>
+<div class="math notranslate nohighlight">
+\[J = \frac{1}{2} \sum_{k=0}^{\infty}
+    \bigl( \tilde{x}_k^{\!T} Q \tilde{x}_k + u_k^{\!T} R u_k \bigr),\]</div>
+<p>with <span class="math notranslate nohighlight">\(Q, R \in \mathbb{R}^{2\times 2}\)</span>. In the implementation
+(<code class="docutils literal notranslate"><span class="pre">spot_controller.py</span></code>)</p>
+<div class="math notranslate nohighlight">
+\[Q = 10\, I_2,\qquad R = I_2,\]</div>
+<p>and the sample time is <span class="math notranslate nohighlight">\(t_{\mathrm{step}} = 0.05\,\mathrm{s}\)</span>.
+The control law is <span class="math notranslate nohighlight">\(u_k = K \tilde{x}_k\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[K = -(B^{\!T} P B + R)^{-1} B^{\!T} P A,\]</div>
+<p>where <span class="math notranslate nohighlight">\(P \succ 0\)</span> solves the discrete algebraic Riccati equation</p>
+<div class="math notranslate nohighlight">
+\[P = Q + A^{\!T} P A
+    - A^{\!T} P B \bigl(R + B^{\!T} P B\bigr)^{-1} B^{\!T} P A.\]</div>
+<p>The LQR object is built with <code class="docutils literal notranslate"><span class="pre">do_mpc.controller.LQR</span></code> on a
+<code class="docutils literal notranslate"><span class="pre">do_mpc.model.LinearModel</span></code> whose right-hand side is
+<span class="math notranslate nohighlight">\(x^{+} = x + u\)</span>.</p>
+</section>
+<section id="saturation">
+<h3>Saturation<a class="headerlink" href="#saturation" title="Link to this heading"></a></h3>
+<p>Before commands reach the whole-body controller they are clipped to
+joint-safe limits:</p>
+<div class="math notranslate nohighlight">
+\[\lvert \phi_k^{\mathrm{ROB}} \rvert \le 0.52\,\mathrm{rad},\qquad
+\lvert \psi_k^{\mathrm{ROB}} \rvert \le 0.52\,\mathrm{rad}.\]</div>
+<p>In code the constants are <code class="docutils literal notranslate"><span class="pre">MAX_PITCH</span> <span class="pre">=</span> <span class="pre">MAX_YAW</span> <span class="pre">=</span> <span class="pre">0.5</span></code> rad
+(<code class="docutils literal notranslate"><span class="pre">spot_interface.py</span></code>).</p>
+</section>
+</section>
+<section id="locomotion-task-3-dof">
+<h2>Locomotion task (3 DoF)<a class="headerlink" href="#locomotion-task-3-dof" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/lin_f.png"><img alt="Linear velocity mapping" src="_images/lin_f.png" style="width: 72%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Linear velocity components <span class="math notranslate nohighlight">\(v_k^{X}\)</span>, <span class="math notranslate nohighlight">\(v_k^{Y}\)</span> in the
+heading frame.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="_images/rot_f.png"><img alt="Angular velocity mapping" src="_images/rot_f.png" style="width: 68%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Rotational velocity <span class="math notranslate nohighlight">\(\omega_k^{Z}\)</span> about the vertical axis of
+the heading frame.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Thumbstick mapping (<code class="docutils literal notranslate"><span class="pre">Controller.get_touch_controls</span></code>):</p>
+<ul class="simple">
+<li><p>If the <strong>right</strong> stick axis exceeds the dead zone
+<code class="docutils literal notranslate"><span class="pre">INPUT_TRESHOLD</span> <span class="pre">=</span> <span class="pre">0.5</span></code>, a saturated value
+<code class="docutils literal notranslate"><span class="pre">+/-</span> <span class="pre">VELOCITY_BASE_SPEED</span></code> (<code class="docutils literal notranslate"><span class="pre">0.5</span> <span class="pre">m/s</span></code>) is assigned to
+<span class="math notranslate nohighlight">\(v^{X}\)</span> or <span class="math notranslate nohighlight">\(v^{Y}\)</span>.</p></li>
+<li><p>The <strong>left</strong> stick is mapped the same way onto
+<span class="math notranslate nohighlight">\(\omega^{Z}\)</span> with <code class="docutils literal notranslate"><span class="pre">VELOCITY_BASE_ANGULAR</span> <span class="pre">=</span> <span class="pre">0.5</span></code> rad/s.</p></li>
+</ul>
+<p>Commands last <code class="docutils literal notranslate"><span class="pre">VELOCITY_CMD_DURATION</span> <span class="pre">=</span> <span class="pre">0.6</span></code> s on the SDK side so a
+dropped packet does not leave the robot walking indefinitely.</p>
+</section>
+<section id="parallel-execution">
+<h2>Parallel execution<a class="headerlink" href="#parallel-execution" title="Link to this heading"></a></h2>
+<p>The two tasks run in the same control loop:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hmd_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">get_setpoints</span><span class="p">(</span><span class="n">hmd_inputs</span><span class="p">)</span>
+<span class="n">touch_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">spot_measures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">get_body_orientation</span><span class="p">()</span>
+<span class="n">hmd_controls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">get_hmd_controls</span><span class="p">(</span><span class="n">spot_measures</span><span class="p">)</span>
+<span class="n">touch_controls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">get_touch_controls</span><span class="p">(</span><span class="n">touch_inputs</span><span class="p">)</span>
+<span class="n">controls</span> <span class="o">=</span> <span class="n">hmd_controls</span> <span class="o">+</span> <span class="n">touch_controls</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">set_controls</span><span class="p">(</span><span class="n">controls</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The robot can therefore walk while the operator looks around, with
+torso orientation independent of walking direction.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="architecture.html" class="btn btn-neutral float-left" title="System architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="streaming.html" class="btn btn-neutral float-right" title="Real-time streaming" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, RICE Lab — DIBRIS, University of Genova.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
