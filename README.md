@@ -1,99 +1,89 @@
-## Design and User Evaluation of an Immersive Teleoperation System for a Quadruped Robot
+[![DOI](https://zenodo.org/badge/920733245.svg)](https://doi.org/10.5281/zenodo.22940195)
 
-This repository contains a modular software architecture designed for immersive teleoperation of the Boston Dynamics Spot robot using the Meta Quest 2.
+# Immersive Spot Teleoperation
 
-### Documentation
+Immersive Spot Teleoperation is an end-to-end stack for remote control of a Boston Dynamics Spot quadruped from a Meta Quest 2 headset. The operator commands torso attitude from head orientation and planar locomotion from handheld thumbsticks, while stereo video from a ZED 2 camera is compressed on a Jetson Nano and relayed through a public-IP cloud server.
 
-Sphinx sources live in ``docs/`` and follow the *Technical approach* section of the manuscript. Build locally:
+**[Documentation](https://aliy98.github.io/immersive-spot-teleoperation/index.html)** · **[Get Started](https://aliy98.github.io/immersive-spot-teleoperation/installation.html)** · **[API reference](https://aliy98.github.io/immersive-spot-teleoperation/api.html)**
 
-```
-cd docs
-pip install -r requirements.txt
-make html
-```
+**Authors:** Ali Yousefi, Carmine Tommaso Recchiuto, Antonio Sgorbissa — RICE Lab, DIBRIS, University of Genova.
 
-Open ``docs/_build/html/index.html``. A Read the Docs config is provided as ``.readthedocs.yaml``. Pages cover architecture, the LQR torso controller, GStreamer/RTSP pipelines, installation, usage, and the Python API.
-
-
-**Authors:** 
-  - Ali Yousefi, ali.yousefi@edu.unige.it
-  - Carmine Tommaso Recchiuto, carmine.recchiuto@dibris.unige.it
-  - Antonio Sgorbissa, antonio.sgorbissa@unige.it
-    
-©2025 RICE Lab - DIBRIS, University of Genova
 <p align="left">
 <img src="https://github.com/user-attachments/assets/0fdac2aa-7100-4caa-9191-df72cb55c8be" width="150" title="rice_logo">
 </p>
 
-### Package Description
-The package includes source code developed for the following functionalities:
+**Key features**
 
-1. Control Algorithm: Implements the control logic for the robot (``scripts/spot_client/spot_interface.py``).
-2. Sensor Measurements and Control Commands: Handles robot sensor data and applies control commands (``scripts/spot_client/spot_controller.py``).
-3. Stereo Image Capture: Captures stereo images from the ZED camera (``scripts/spot_client/zed_interface.py``).
-4. Robot Control and Image Compression: Manages robot control and compresses images before transmission using a GStreamer pipeline (``scripts/spot_client/spot_client.py``).
-5. HMD Rendering and Command Reading: Renders stereo images on the head-mounted display (HMD) and reads control commands (``src/main.cpp``).
-6. Control Command Transmission: Sends the measured control commands to the robot (``scripts/oculus_client.pt``).
+- **Five-DoF immersive control** — torso pitch and yaw track the HMD with an infinite-horizon LQR while locomotion runs in parallel from the Quest thumbsticks. The stock Spot tablet cannot command looking and walking at the same time.
+- **Head-orientation tracking** — HMD IMU pitch/yaw become the LQR reference; roll is unused; commands are saturated at ±0.5 rad before they reach the Boston Dynamics whole-body controller.
+- **Thumbstick locomotion** — right stick maps to heading-frame linear velocities, left stick maps to yaw rate, with a dead-zone policy.
+- **Hardware-accelerated stereo streaming** — a GStreamer pipeline on the Jetson encodes ZED 2 frames with `nvv4l2h264enc` and publishes them over RTSP (MediaMTX).
+- **Cloud + cellular architecture** — MQTT (Mosquitto) carries 20 Hz control and RTSP carries video through a Google Cloud or Azure VM; the robot uses a SIM7600G-H 4G dongle instead of site Wi-Fi.
+- **Matched field of view** — streamed frames are cropped so the HMD view is comparable to the tablet controller used in the user study.
+- **Link-loss handling** — the Jetson probes connectivity and restarts the modem service if the 4G uplink drops.
+- **Evaluation helpers** — scripts to record, plot, and summarise FPS, latency, bitrate, jitter, and dropped frames.
 
-The last two source codes run on the user's PC (Windows), while the others run on the Jetson board (Ubuntu) mounted on the robot.
+## Installation
 
-### Dependencies
-**The required software on the user's PC are the following:**
-- Windows 64 bits
-- python (3.7.0 or later)
-- CMake 
-- Visual Studio 2022
-- [Oculus SDK](https://developer.oculus.com/downloads/package/oculus-sdk-for-windows/) (1.17 or later)
-- [CUDA](https://developer.nvidia.com/cuda-downloads).
-- [GLEW](https://glew.sourceforge.net/) included in the ZED SDK dependencies folder
-- [SDL](https://github.com/libsdl-org/SDL/releases/tag/release-2.30.1)
-- [GStreamer](https://gstreamer.freedesktop.org/documentation/installing/on-windows.html?gi-language=missing:%20GSTREAMER_LIBRARY%20GSTREAMER_BASE_LIBRARY%20GSTREAMER_BASE_INCLUDE_DIR)
-- [OpenCV](https://docs.opencv.org/4.x/d3/d52/tutorial_windows_install.html)
-- [paho-mqtt](https://pypi.org/project/paho-mqtt/)
+See the **[Installation guide](https://aliy98.github.io/immersive-spot-teleoperation/installation.html)** for full instructions on the Windows operator PC, the Jetson payload, and the cloud VM.
 
-**On the Jetson board:**
-- Ubuntu 18.04
-- python (3.7.0 or later)
-- CMake
-- [Spot SDK](https://dev.bostondynamics.com/)
-- [ZED SDK 3.x](https://www.stereolabs.com/developers) 
-- [ZED Python API](https://www.stereolabs.com/docs/app-development/python/install)
-- [Gstreamer](https://gstreamer.freedesktop.org/documentation/installing/on-linux.html?gi-language=missing:%20GSTREAMER_LIBRARY%20GSTREAMER_BASE_LIBRARY%20GSTREAMER_BASE_INCLUDE_DIR)
-- [OpenCV](https://docs.opencv.org/4.x/d2/de6/tutorial_py_setup_in_ubuntu.html)
-- [do-mpc](https://www.do-mpc.com/en/latest/installation.html)
-- [paho-mqtt](https://pypi.org/project/paho-mqtt/)
+Build the Sphinx documentation locally:
 
-**On the cloud server:**
-Create a Virtual Machine on a cloud server e.g., [Google Cloud](https://cloud.google.com/gcp?utm_source=google&utm_medium=cpc&utm_campaign=emea-it-all-en-bkws-all-all-trial-e-gcp-1707574&utm_content=text-ad-none-any-DEV_c-CRE_500236788708-ADGP_Hybrid+%7C+BKWS+-+EXA+%7C+Txt+-+GCP+-+General+-+v1-KWID_43700060384861753-kwd-6458750523-userloc_1008337&utm_term=KW_google%20cloud-NET_g-PLAC_&&gad_source=1&gclid=CjwKCAiAkc28BhB0EiwAM001TZVxUwbj72gOj4Y6C4xPtYfWtdJU1TFi5W-UiXgAR-4iRHT6YesYVRoCoVMQAvD_BwE&gclsrc=aw.ds), or [Microsoft Azure](https://azure.microsoft.com/en-us/pricing/purchase-options/azure-account/search?icid=free-search&ef_id=_k_CjwKCAiAkc28BhB0EiwAM001TbAAdZrGIjKV1fpHcYiFBH7cSAsD0j858p8zGkIlAga3w0IMXil1bRoCnxMQAvD_BwE_k_&OCID=AIDcmmy6frl1tq_SEM__k_CjwKCAiAkc28BhB0EiwAM001TbAAdZrGIjKV1fpHcYiFBH7cSAsD0j858p8zGkIlAga3w0IMXil1bRoCnxMQAvD_BwE_k_&gad_source=1&gclid=CjwKCAiAkc28BhB0EiwAM001TbAAdZrGIjKV1fpHcYiFBH7cSAsD0j858p8zGkIlAga3w0IMXil1bRoCnxMQAvD_BwE) and get the following dependencies:
-- [Mediamtx](https://github.com/bluenviron/mediamtx#corrupted-frames)
-- [Mosquitto](https://mosquitto.org/download/)
+```bash
+python -m pip install -r docs/requirements.txt
+python -m sphinx -b html docs docs/build/html
+```
 
-### Build
-**On the user's PC:**
-Clone the source files from the repositoy and follow the instructions below: 
-1. Create a folder called "build" in the root folder
-2. Open cmake-gui and select the source and build folders
-3. Generate the Visual Studio Win64 solution
-4. Open the resulting solution and change configuration to Release. You may have to modify the path of the dependencies to match your configuration
-5. Build solution
-Build OpenCV with GStreamer ([Tutorial](https://galaktyk.medium.com/how-to-build-opencv-with-gstreamer-b11668fa09c)).
+## Commands
 
-**On the Jetson:**
-The software does not require build, just clone the scripts files in the spot_clinet folder from the repository, but you have to build OpenCV with GStreamer on the Jetson as well ([Tutorial](https://galaktyk.medium.com/how-to-build-opencv-with-gstreamer-b11668fa09c)).
+| Command | Where | Description |
+| --- | --- | --- |
+| `sudo systemctl start mosquitto` | Cloud VM | Start the MQTT broker |
+| `./mediamtx` | Cloud VM | Start the RTSP server |
+| `python spot_client.py <cloud-ip> ZED` | Jetson | Control loop + ZED RTSP publisher |
+| `"ZED Stereo Passthrough.exe" <cloud-ip> ZED` | Windows | Decode the stream and render to the Quest 2 |
+| `python scripts/oculus_client.py <cloud-ip>` | Windows | Publish HMD / thumbstick samples to MQTT |
+| `python scripts/record_metrics.py` | Windows | Log RTSP link metrics to CSV |
+| `python scripts/plot_metrics.py` | Any | Plot FPS, bitrate, latency, and jitter |
+| `python scripts/stats_metrics.py` | Any | Print mean / std / min / max / median |
 
-### Usage
-**On the robot side (Linux/Jetson):** Run the ``spot_client.py`` script as follows:
-```
-python spot_client.py <cloud-server-public-ip> ZED
-```
-**On the user side (Windows):** Run the ''ZED_Stereo_Passthrough.exe'' in a terminal as it follows:
-```
-'./ZED Stereo Passthrough.exe' <cloud-server-public-ip> ZED
-```
-**On the cloud server:** Run the following commands:
-```
-sudo systemctl start mosqitto
-```
-```
-./mediamtx
-```
+Bring the nodes up in that order: cloud, robot, operator renderer, then the MQTT bridge.
+
+## Pipeline
+
+The system is a three-node loop:
+
+1. **Sense** — the Jetson grabs ZED 2 stereo frames (or Spot onboard cameras), crops them to the study FoV, and hardware-encodes H.264.
+2. **Relay** — MediaMTX serves `rtsp://<cloud-ip>:8554/spot-stream`; Mosquitto forwards `oculus/inputs`.
+3. **Present** — the Windows client decodes the stream, draws left/right textures in the HMD, and writes six floats to `\\.\pipe\MyPipe`.
+4. **Command** — `oculus_client.py` publishes those floats; the Jetson LQR + dead-zone map applies torso and locomotion commands through the Spot SDK.
+
+## Control
+
+Two tasks run in the same loop and are independent of each other:
+
+- **Torso orientation (2 DoF)** — discrete integrator $x_{k+1}=x_k+u_k$ with an infinite-horizon LQR ($Q=10I$, $R=I$, $t_{\mathrm{step}}=0.05,\mathrm{s}$). The HMD pitch axis is sign-flipped to match the robot body-fixed frame.
+- **Locomotion (3 DoF)** — heading-frame $v^X$, $v^Y$, and $\omega^Z$ from the Quest sticks after a 0.5 dead zone, saturated at 0.5 m/s and 0.5 rad/s. SDK commands expire after 0.6 s.
+
+The operator can walk while looking around; torso orientation does not change walking direction.
+
+## Roadmap
+
+Potential future extensions include:
+
+- **Additional camera sources** — tighter support for Spot onboard cameras without a ZED 2.
+- **5G and multi-operator relays** — optional high-bandwidth links where coverage exists.
+- **On-headset clients** — reduce the tethered Windows PC in the loop.
+- **Richer mobility modes** — stair and obstacle hints exposed from the high-level layer.
+- **Broader platform support** — the same HMD + cloud pattern on other quadrupeds.
+
+## Disclaimer
+
+This repository is research software provided **as-is**, without warranty of any kind. Operating a Spot robot involves inherent physical risk. Users are responsible for leases, e-stops, site permissions, and safe deployment on public networks. Do not commit robot credentials; configure address and account locally before running `spot_interface.py`.
+
+## Citation
+
+If you use this software, please cite *Design and User Evaluation of an Immersive Teleoperation System for a Quadruped Robot* (Yousefi, Recchiuto, Sgorbissa). Code: https://github.com/aliy98/immersive-spot-teleoperation
+
+© 2025 RICE Lab — DIBRIS, University of Genova.
+
