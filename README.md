@@ -1,8 +1,11 @@
+# Overview
 [![DOI](https://zenodo.org/badge/920733245.svg)](https://doi.org/10.5281/zenodo.22940195)
 
 # Immersive Spot Teleoperation
 
-Immersive Spot Teleoperation is an end-to-end stack for remote control of a Boston Dynamics Spot quadruped from a Meta Quest 2 headset. The operator commands torso attitude from head orientation and planar locomotion from handheld thumbsticks, while stereo video from a ZED 2 camera is compressed on a Jetson Nano and relayed through a public-IP cloud server.
+**Immersive Spot Teleoperation** is an end-to-end stack for remote control of a Boston Dynamics Spot quadruped from a Meta Quest 2 headset. The operator commands torso attitude from head orientation and planar locomotion from handheld thumbsticks, while stereo video from a ZED 2 camera is compressed on a Jetson Nano and relayed through a public-IP cloud server.
+
+**Dataset:** [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22937199.svg)](https://doi.org/10.5281/zenodo.22937199)
 
 **[Documentation](https://aliy98.github.io/immersive-spot-teleoperation/index.html)** · **[Get Started](https://aliy98.github.io/immersive-spot-teleoperation/installation.html)** · **[API reference](https://aliy98.github.io/immersive-spot-teleoperation/api.html)**
 
